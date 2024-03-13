@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Gift\GiftController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,5 +24,15 @@ Route::prefix('auth')->group(function () {
         'middleware' => 'auth:api'
       ], function() {
           Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+      });
+});
+
+
+Route::prefix('gifts')->group(function () {
+    Route::group([
+        'middleware' => 'auth:api'
+      ], function() {
+          Route::get('/', [GiftController::class, 'index'])->name('gifts');
+          Route::get('/{giftId}', [GiftController::class, 'show'])->name('gift');
       });
 });
