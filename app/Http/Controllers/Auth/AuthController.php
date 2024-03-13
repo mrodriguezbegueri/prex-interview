@@ -40,10 +40,9 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $validator =  Validator::make($request->all(),[
+        $validator =  Validator::make($request->all(), [
             'email' => 'required|string|email',
             'password' => 'required|string',
-            'remember_me' => 'boolean'
         ]);
 
         if ($validator->fails()) {
@@ -66,10 +65,8 @@ class AuthController extends Controller
 
         $token = $tokenResult->token;
 
-        if ($request->remember_me) {
-            $token->expires_at = Carbon::now()->addWeeks(1);
-            $token->save();
-        }
+        $token->expires_at = Carbon::now()->addMinutes(30);
+
         return response()->json([
             'user' => $user,
             'access_token' => $tokenResult->accessToken,
@@ -86,5 +83,4 @@ class AuthController extends Controller
             'message' => 'Successfully logged out'
         ]);
     }
-
 }
