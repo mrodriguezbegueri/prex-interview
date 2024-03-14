@@ -18,7 +18,7 @@ class UserActivityLog extends Model
         'body_request',
         'http_code',
         'body_response',
-        'client_IP',
+        'ip_address',
     ];
 
     public function user()

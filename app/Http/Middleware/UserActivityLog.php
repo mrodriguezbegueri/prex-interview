@@ -18,11 +18,11 @@ class UserActivityLog
     public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
+        $responseData = $response->getContent();
 
         $userId = Auth::id();
 
         if ($userId == null) {
-            $responseData = $response->getContent();
             $responseJson = json_decode($responseData, true);
 
             if (isset($responseJson['user']) && isset($responseJson['user']['id'])) {
@@ -32,9 +32,11 @@ class UserActivityLog
 
         ModelsUserActivityLog::create([
             'service' => $request->path(),
+            'user_id' => $userId,
             'body_request' => json_encode($request->all()),
+            'body_response' => $responseData,
             'http_code' => $response->getStatusCode(),
-            'user_id' => $userId
+            'ip_address' => $request->ip()
         ]);
 
         return $response;

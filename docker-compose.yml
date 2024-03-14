@@ -1,6 +1,19 @@
 version: '3.8'
 
 services:
+  db:
+    container_name: db
+    image: mysql:latest
+    env_file:
+      - .env.docker-compose
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+
   api:
     container_name: api
     build:
@@ -29,20 +42,6 @@ services:
     networks:
       - app-network
 
-  
-
-  db:
-    container_name: db
-    image: mysql:latest
-    env_file:
-      - .env.docker-compose
-    restart: always
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-    networks:
-      - app-network
 
 networks:
   app-network:
