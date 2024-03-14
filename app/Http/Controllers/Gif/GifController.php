@@ -63,7 +63,7 @@ class GifController extends Controller
         $gifParseData = parseGifsData([$gifData]);
 
         return response()->json([
-            'message' => 'Successfully retrieved gift!',
+            'message' => 'Successfully retrieved gif!',
             'data' => $gifParseData
         ], 200);
     }
@@ -77,7 +77,7 @@ class GifController extends Controller
 
         $gif = $this->giphyApiService->getGif($request->gif_id);
 
-        $userGift = UserGif::create([
+        $userGif = UserGif::create([
             'external_id' => $gif['id'],
             'user_id' => Auth::id(),
             'name' => $gif['title'],
@@ -85,8 +85,8 @@ class GifController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Successfully created gift!',
-            'data' => $userGift
+            'message' => 'Successfully created gif!',
+            'data' => $userGif
         ], 201);
     }
 }
