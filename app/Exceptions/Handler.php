@@ -2,9 +2,11 @@
 
 namespace App\Exceptions;
 
+use GuzzleHttp\Psr7\Query;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use League\OAuth2\Server\Exception\OAuthServerException;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -52,10 +54,34 @@ class Handler extends ExceptionHandler
 
     public function render($request, \Throwable $exception)
     {
+        $response = null;
+
         if ($exception instanceof AuthenticationException && $exception->guards() === ['api']) {
-            return response()->json([
+            $response = response()->json([
                 'message' => 'Unauthorized',
             ], 401);
+        }
+
+        if ($exception instanceof ValidationException) {
+            $response = response()->json(['errors' => $exception->errors()], 422);
+        }
+
+        if ($exception instanceof ModelNotFoundException) {
+            $response = response()->json([
+                'error' => 'The resource was not founded.',
+                'message' => $exception->getMessage() ?: 'Resource not found'
+            ], 404);
+        }
+    
+        if ($exception instanceof Query) {
+            $response = response()->json([
+                'error' => 'Error in query DB',
+                'message' => $exception->getMessage() ?: 'Error in query DB'
+            ], 500);
+        }
+
+        if ($response != null) {
+            return $response;
         }
 
         return parent::render($request, $exception);

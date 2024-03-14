@@ -8,6 +8,7 @@ use App\Services\GIPHYApiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class GifController extends Controller
 {
@@ -20,18 +21,12 @@ class GifController extends Controller
 
     public function index(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'query' => 'required|string|min:1|max:50',
             'limit' => 'string|numeric',
             'offset' => 'string|numeric',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ], 400);
-        }
-        
         $gifsData = $this->giphyApiService->getGifs(
             $request->query('query'),
             $request->query('limit'),
@@ -51,15 +46,20 @@ class GifController extends Controller
         $validator = Validator::make(['gif_id' => $gifId], [
             'gif_id' => 'required|string',
         ]);
-    
+
         if ($validator->fails()) {
-            return response()->json([
-                'error' => 'Invalid gift ID',
-                'details' => $validator->errors()
-            ], 400);
+            throw new ValidationException($validator);
         }
-        
+
         $gifData = $this->giphyApiService->getGif($gifId);
+
+        if (empty($gifData)) {
+            return response()->json([
+                'message' => 'Gif not found!',
+            ], 404);
+        }
+
+
         $gifParseData = parseGifsData([$gifData]);
 
         return response()->json([
@@ -70,20 +70,14 @@ class GifController extends Controller
 
     public function create(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'gif_id' => 'required|string',
             'alias' => 'required|string'
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ], 400);
-        }
-
         $gif = $this->giphyApiService->getGif($request->gif_id);
-        
-      $userGift = UserGif::create([
+
+        $userGift = UserGif::create([
             'external_id' => $gif['id'],
             'user_id' => Auth::id(),
             'name' => $gif['title'],

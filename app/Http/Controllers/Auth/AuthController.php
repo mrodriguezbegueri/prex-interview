@@ -7,25 +7,18 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
     public function signUp(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+      $request->validate([
             'name' => 'required|string|min:3|max:255',
             'address' => 'nullable|string|min:3|max:255',
             'phone' => 'nullable|min:11|string|max:255',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:6|max:20|confirmed'
         ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ], 400);
-        }
 
         $user = User::create([
             'name' => $request->name,
@@ -41,16 +34,10 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $validator =  Validator::make($request->all(), [
+        $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ], 400);
-        }
 
         $credentials = request(['email', 'password']);
 
