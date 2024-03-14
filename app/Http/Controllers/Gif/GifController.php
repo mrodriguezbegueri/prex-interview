@@ -1,15 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Gift;
+namespace App\Http\Controllers\Gif;
 
 use App\Http\Controllers\Controller;
+use App\Models\UserGif;
+use App\Services\GIPHYApiService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class GiftController extends Controller
+class GifController extends Controller
 {
+    protected $giphyApiService;
+
+    public function __construct(GIPHYApiService $giphyApiService)
+    {
+        $this->giphyApiService = $giphyApiService;
+    }
+
     public function index(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -23,32 +31,25 @@ class GiftController extends Controller
                 'errors' => $validator->errors()
             ], 400);
         }
+        
+        $gifsData = $this->giphyApiService->getGifs(
+            $request->query('query'),
+            $request->query('limit'),
+            $request->query('offset')
+        );
 
-        $gyphyApiUrl= env('GIPHY_API_URL');
-        $gyphyApiKey = env('GIPHY_DEV_API_KEY');
-        
-        $response = Http::get($gyphyApiUrl . '/gifs/search', [
-            'api_key' => $gyphyApiKey,
-            'q' => $request->query('query'),
-            'limit' => $request->query('limit'),
-            'offset' => $request->query('offset'),
-        
-        ]);
-        
-        $giftsData = $response->json();
-        $giftsParseData = parseGiftsData($giftsData['data']);
+        $gifsParseData = parseGifsData($gifsData);
 
         return response()->json([
-            'message' => 'Successfully retrieved gifts!',
-            'data' => $giftsParseData
+            'message' => 'Successfully retrieved gifs!',
+            'data' => $gifsParseData
         ], 200);
     }
 
-    public function show($giftId)
+    public function show($gifId)
     {
-        
-        $validator = Validator::make(['gift_id' => $giftId], [
-            'gift_id' => 'required|string',
+        $validator = Validator::make(['gif_id' => $gifId], [
+            'gif_id' => 'required|string',
         ]);
     
         if ($validator->fails()) {
@@ -57,27 +58,20 @@ class GiftController extends Controller
                 'details' => $validator->errors()
             ], 400);
         }
-
-        $gyphyApiUrl= env('GIPHY_API_URL');
-        $gyphyApiKey = env('GIPHY_DEV_API_KEY');
         
-        $response = Http::get($gyphyApiUrl . '/gifs/' . $giftId, [
-            'api_key' => $gyphyApiKey
-        ]);
-        
-        $giftData = $response->json();
-        $giftParseData = parseGiftsData([$giftData['data']]);
+        $gifData = $this->giphyApiService->getGif($gifId);
+        $gifParseData = parseGifsData([$gifData]);
 
         return response()->json([
             'message' => 'Successfully retrieved gift!',
-            'data' => $giftParseData
+            'data' => $gifParseData
         ], 200);
     }
 
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'gift_id' => 'required|string',
+            'gif_id' => 'required|string',
             'alias' => 'required|string'
         ]);
 
@@ -87,6 +81,14 @@ class GiftController extends Controller
             ], 400);
         }
 
+        $gif = $this->giphyApiService->getGif($request->gif_id);
+
+        UserGif::create([
+            'external_id' => $gif->id,
+            'user_id' => Auth::id(),
+            'name' => $gif->title,
+            'url' => $gif->url
+        ]);
 
         return response()->json([
             'message' => 'Successfully created gift!',

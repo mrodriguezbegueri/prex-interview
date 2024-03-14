@@ -23,7 +23,7 @@
     },
     "autoload": {
         "files": [
-            "app/Helpers/GiftHelper.php"
+            "app/Helpers/GifHelper.php"
         ],
         "psr-4": {
             "App\\": "app/",
