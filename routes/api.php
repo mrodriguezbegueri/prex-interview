@@ -33,5 +33,6 @@ Route::prefix('gifs')->group(function () {
       ], function() {
           Route::get('/', [GifController::class, 'index'])->name('gifs');
           Route::get('/{gifId}', [GifController::class, 'show'])->name('gif');
+          Route::post('/', [GifController::class, 'create'])->name('gif');
       });
 });

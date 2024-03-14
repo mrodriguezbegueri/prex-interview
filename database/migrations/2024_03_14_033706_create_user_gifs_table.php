@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -12,8 +13,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_gifs', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('external_id');
+            $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
+            $table->uuid('external_id')->unique();
             $table->string('name');
             $table->string('url');
             $table->uuid('user_id');

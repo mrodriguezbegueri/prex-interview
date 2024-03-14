@@ -82,17 +82,17 @@ class GifController extends Controller
         }
 
         $gif = $this->giphyApiService->getGif($request->gif_id);
-
-        UserGif::create([
-            'external_id' => $gif->id,
+        
+      $userGift = UserGif::create([
+            'external_id' => $gif['id'],
             'user_id' => Auth::id(),
-            'name' => $gif->title,
-            'url' => $gif->url
+            'name' => $gif['title'],
+            'url' => $gif['url']
         ]);
 
         return response()->json([
             'message' => 'Successfully created gift!',
-            'data' => []
+            'data' => $userGift
         ], 201);
     }
 }

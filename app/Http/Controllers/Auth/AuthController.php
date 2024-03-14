@@ -15,8 +15,8 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:3|max:255',
-            'address' => 'string|min:3|max:255',
-            'phone' => 'string|min:3|max:255',
+            'address' => 'nullable|string|min:3|max:255',
+            'phone' => 'nullable|min:11|string|max:255',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:6|max:20|confirmed'
         ]);
@@ -27,14 +27,15 @@ class AuthController extends Controller
             ], 400);
         }
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
 
         return response()->json([
-            'message' => 'Successfully created user!'
+            'message' => 'Successfully created user!',
+            'user' => $user
         ], 201);
     }
 
