@@ -28,6 +28,8 @@ RUN useradd -u 1000 -ms /bin/bash -g www www
 COPY . /var/www
 
 RUN composer install
+RUN composer dump-autoload
+RUN php artisan key:generate --force
 
 COPY --chown=www:www . /var/www
 

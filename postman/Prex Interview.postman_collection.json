@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "4235cae9-4358-46b8-ad76-c32338e5bbb9",
+		"name": "Prex Interview",
+		"description": "API desarrollada para entrevista de la empresa Prex.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19483341"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "signUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Matias\",\n    \"email\": \"mati@gmail.com\",\n    \"password\": \"12345678\",\n    \"password_confirmation\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						},
+						"description": "Este endpoint permite registrar un usuario nuevo en la API."
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extrae el token de la respuesta y lo almacena en una variable de ambiente",
+									"pm.test(\"Almacena el token en una variable de ambiente\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"access_token\", jsonData.access_token);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"mati@gmail.com\",\n    \"password\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "El endpoint login permite obtener un json web token, con el cual un usuario tendra acceso a distintos recursos y servicios de la API."
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						},
+						"description": "Permite revocar el json web token de un usuario logueado."
+					},
+					"response": []
+				}
+			],
+			"description": "Esta carpeta contiene todos los métodos necesarios para la autorización de la API."
+		},
+		{
+			"name": "Gifs",
+			"item": [
+				{
+					"name": "gifs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/gifs?query=rabbit&limit=5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"gifs"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "rabbit",
+									"description": "Requerido"
+								},
+								{
+									"key": "limit",
+									"value": "5",
+									"description": "Opcional"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Opcional",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Permite realizar una búsqueda de gifs. Esta búsqueda cuenta con la integración de la API de GHIPY, de donde se obtiene los datos correspondientes."
+					},
+					"response": []
+				},
+				{
+					"name": "gif",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/gifs/WiXMlla4ZFR8Q",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"gifs",
+								"WiXMlla4ZFR8Q"
+							]
+						},
+						"description": "Permite obtener los datos correspondientes a un solo gif, mediante el envió de su id."
+					},
+					"response": []
+				}
+			],
+			"description": "Esta carpeta contiene los endpoints necesarios para interacturar con el recurso Gif."
+		},
+		{
+			"name": "UserGifs",
+			"item": [
+				{
+					"name": "userGifs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"gif_id\": \"WiXMlla4ZFR8Q\",\n    \"alias\": \"Rabbit\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/gifs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"gifs"
+							]
+						},
+						"description": "Permite asignar un gif a un usuario en particular."
+					},
+					"response": []
+				}
+			],
+			"description": "Contiene los endpoints que interactuan entre el recurso gif y el recurso user."
+		}
+	]
+}
