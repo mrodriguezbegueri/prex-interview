@@ -34,7 +34,7 @@ Siguiendo estos pasos, podrás levantar la API y comenzar a utilizarla.
 
 ## Colección de Postman
 
-También se proporciona una colección de Postman que contiene ejemplos de solicitudes para interactuar con la API. Puedes encontrar la colección en la raíz del proyecto, dentro de la carpeta `postman`.
+También se proporciona una colección de Postman que contiene ejemplos de solicitudes para interactuar con la API. Puedes encontrar la colección en el proyecto, dentro de la carpeta `docs/postman`.
 
 Para importar la colección en tu cliente de Postman, sigue estos pasos:
 
