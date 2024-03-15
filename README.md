@@ -51,3 +51,7 @@ Para importar la colección en tu cliente de Postman, sigue estos pasos:
 4. Haz clic en "Importar" para cargar la colección en tu cliente de Postman.
 
 Una vez importada la colección, podrás ver y ejecutar las solicitudes predefinidas para probar la API de manera fácil y rápida.
+
+## Documentación
+
+En la carpeta "docs" dentro de la raiz del proyecto, se puede encontrar documentación más específica respecto al diseño de la API.
