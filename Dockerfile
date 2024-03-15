@@ -29,7 +29,6 @@ COPY . /var/www
 
 RUN composer install
 RUN composer dump-autoload
-RUN php artisan key:generate --force
 
 COPY --chown=www:www . /var/www
 
