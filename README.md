@@ -19,18 +19,12 @@ Asegúrate de tener Docker y Docker Compose instalados en tu sistema. Si aún no
     ```bash
     docker-compose up -d
     ```
-
-3. Genera la clave de applicación
-   ```bash
-   docker exec api php artisan key:generate
-   ```
-
-4. Realiza las migraciones de la base de datos con el siguiente comando:
+3. Realiza las migraciones de la base de datos con el siguiente comando:
     ```bash
     docker exec api php artisan migrate
     ```
 
-5. Instala Passport dentro del contenedor de la API utilizando el siguiente comando:
+4. Instala Passport dentro del contenedor de la API utilizando el siguiente comando:
     ```bash
     docker exec api php artisan passport:install --uuids
     ```

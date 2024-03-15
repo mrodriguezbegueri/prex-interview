@@ -1,7 +1,5 @@
 FROM php:8.3-fpm
 
-COPY composer.lock composer.json /var/www/
-
 WORKDIR /var/www
 
 # Dependencies
@@ -27,12 +25,9 @@ RUN useradd -u 1000 -ms /bin/bash -g www www
 
 COPY . /var/www
 
-RUN composer install
-RUN composer dump-autoload
-
 COPY --chown=www:www . /var/www
 
 USER www
 EXPOSE 9000
 
-CMD ["php-fpm"]
+CMD bash -c "composer install && composer dump-autoload && php artisan key:generate && php-fpm"
