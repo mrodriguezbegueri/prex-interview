@@ -26,7 +26,7 @@ class GIPHYApiService
         ]);
 
         $gifsData = $getGifsResponse->json();
-
+        
         return $gifsData['data'];
     }
 

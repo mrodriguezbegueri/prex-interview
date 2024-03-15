@@ -1,5 +1,6 @@
 <?php
 
+namespace App\Helpers;
 
 function parseGifsData($gifsData = []) {
     $gifsDto = [];
@@ -14,6 +15,10 @@ function parseGifsData($gifsData = []) {
         ];
     
         $gifsDto[] = $filteredGif;
+    }
+
+    if (count($gifsDto) === 1) {
+        return $gifsDto[0];
     }
 
     return $gifsDto;

@@ -27,10 +27,11 @@ RUN useradd -u 1000 -ms /bin/bash -g www www
 
 COPY . /var/www
 
+RUN composer install
+
 COPY --chown=www:www . /var/www
 
 USER www
-
 EXPOSE 9000
 
 CMD ["php-fpm"]

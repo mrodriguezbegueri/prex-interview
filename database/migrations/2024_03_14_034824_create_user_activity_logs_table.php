@@ -15,8 +15,8 @@ return new class extends Migration
         Schema::create('user_activity_logs', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->string('service');
-            $table->json('body_request');
-            $table->json('body_response');
+            $table->mediumText('body_request');
+            $table->mediumText('body_response');
             $table->integer('http_code');
             $table->string('ip_address')->nullable();
             $table->timestamps();

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
+use function App\Helpers\parseGifsData;
+
 class GifController extends Controller
 {
     protected $giphyApiService;
@@ -23,8 +25,8 @@ class GifController extends Controller
     {
         $request->validate([
             'query' => 'required|string|min:1|max:50',
-            'limit' => 'string|numeric',
-            'offset' => 'string|numeric',
+            'limit' => 'numeric',
+            'offset' => 'numeric',
         ]);
 
         $gifsData = $this->giphyApiService->getGifs(
