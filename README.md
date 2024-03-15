@@ -13,7 +13,7 @@ Asegúrate de tener Docker y Docker Compose instalados en tu sistema. Si aún no
 
 **Pasos:**
 
-1. Crea el archivo `.env` en la raíz del proyecto y configura las variables de entorno necesarias.
+1. Crea el archivo `.env` en la raíz del proyecto y configura las variables de entorno necesarias. (El archivo .env.example tiene lo necesario para interactuar con la base de datos creada por el docker-compose.yml)
 
 2. Construye los contenedores ejecutando el siguiente comando en tu terminal:
     ```bash
