@@ -15,25 +15,26 @@ Asegúrate de tener Docker y Docker Compose instalados en tu sistema. Si aún no
 
 1. Crea el archivo `.env` en la raíz del proyecto y configura las variables de entorno necesarias. (El archivo .env.example tiene lo necesario para interactuar con la base de datos creada por el docker-compose.yml)
 
-2. Construye los contenedores ejecutando el siguiente comando en tu terminal:
-    ```bash
-    docker-compose up -d
-    ```
-3. Realiza las migraciones de la base de datos con el siguiente comando:
-    ```bash
-    docker exec api php artisan migrate
-    ```
-
-4. Instala Passport dentro del contenedor de la API utilizando el siguiente comando:
-    ```bash
-    docker exec api php artisan passport:install --uuids
-    ```
-5. Configurar las variables de ambientes de GHIPY 
+2. Configurar las variables de ambientes de GHIPY 
     ```
     GIPHY_DEV_API_KEY=xxxxx
     GIPHY_API_URL=api.giphy.com/v1
     ```
     Donde "GIPHY_DEV_API_KEY" debe ser una key valida del servicio GHIPY. Esta se puede encontrar siguiendo la siguiente guía: [GHIPY](https://developers.giphy.com/docs/api/#quick-start-guide)
+
+3. Construye los contenedores ejecutando el siguiente comando en tu terminal:
+    ```bash
+    docker-compose up -d
+    ```
+4. Realiza las migraciones de la base de datos con el siguiente comando:
+    ```bash
+    docker exec api php artisan migrate
+    ```
+
+5. Instala Passport dentro del contenedor de la API utilizando el siguiente comando:
+    ```bash
+    docker exec api php artisan passport:install --uuids
+    ```
 
 Siguiendo estos pasos, podrás levantar la API y comenzar a utilizarla.
 
