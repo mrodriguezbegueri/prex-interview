@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Exception;
 use Illuminate\Support\Facades\Http;
 
 class GIPHYApiService
@@ -17,28 +18,35 @@ class GIPHYApiService
 
     public function getGifs($query, $limit = 5, $offset = 0)
     {
-        $getGifsResponse = Http::get($this->apiBaseUrl . '/gifs/search', [
-            'api_key' => $this->apiKey,
-            'q' => $query,
-            'limit' => $limit,
-            'offset' => $offset,
-        
-        ]);
+        try {
+            $getGifsResponse = Http::get($this->apiBaseUrl . '/gifs/search', [
+                'api_key' => $this->apiKey,
+                'q' => $query,
+                'limit' => $limit,
+                'offset' => $offset,
+            ]);
 
-        $gifsData = $getGifsResponse->json();
-        
-        return $gifsData['data'];
+            $gifsData = $getGifsResponse->json();
+
+            return $gifsData['data'];
+        } catch (Exception $e) {
+            return [];
+        }
     }
 
     public function getGif($gifId)
     {
-        $getGifResponse = Http::get($this->apiBaseUrl . '/gifs/' . $gifId, [
-            'api_key' => $this->apiKey
-        ]);
-        
-        $gifData = $getGifResponse->json();
+        try {
+            $getGifResponse = Http::get($this->apiBaseUrl . '/gifs/' . $gifId, [
+                'api_key' => $this->apiKey
+            ]);
 
-        return $gifData['data'];
+            $gifData = $getGifResponse->json();
+
+            return $gifData['data'];
+        } catch (Exception $e) {
+            return [];
+        }
     }
 
 }
