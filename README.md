@@ -2,7 +2,7 @@
 
 ## Descripción
 
-Esta API fue desarrollada en PHP utilizando Laravel 10 y está integrada con el servicio de GHIPY.
+Esta API fue desarrollada en PHP utilizando Laravel 10 con PHP 8.3 y está integrada con el servicio de GHIPY.
 
 ### Instrucciones para levantar la API
 
@@ -28,6 +28,12 @@ Asegúrate de tener Docker y Docker Compose instalados en tu sistema. Si aún no
     ```bash
     docker exec api php artisan passport:install --uuids
     ```
+5. Configurar las variables de ambientes de GHIPY 
+    ```
+    GIPHY_DEV_API_KEY=xxxxx
+    GIPHY_API_URL=api.giphy.com/v1
+    ```
+    Donde "GIPHY_DEV_API_KEY" debe ser una key valida del servicio GHIPY. Esta se puede encontrar siguiendo la siguiente guía: [GHIPY](https://developers.giphy.com/docs/api/#quick-start-guide)
 
 Siguiendo estos pasos, podrás levantar la API y comenzar a utilizarla.
 
